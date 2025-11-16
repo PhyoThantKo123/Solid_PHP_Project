@@ -6,16 +6,20 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     $data = [
         'title' => $_POST['title'],
-        'desc' => $_POST['description']
+        'desc' => $_POST['description'],
     ];
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $data['image'] = $_FILES['image'];
+    }
 
     $result = $obj->insert($data);
 
-    if ($result === true) {
+    if ($result['success'] === true) {
         header('Location: index.php');
         exit;
     } else {
-        $error = $result; 
+        var_dump($result);
     }
 
 }
@@ -39,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
             <h2 class="text-center mb-4">Create Post</h2>
 
-            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
+            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title">Title<span class="text-danger">*</span> : <span class="text-danger"><?= isset($error['title']) ? $error['title'] : "" ?></span></label>
                     <input type="text" name="title" id="title" class="form-control" value="<?= isset($_POST['title']) ? $_POST['title'] : "" ?>" placeholder="Enter Title">
