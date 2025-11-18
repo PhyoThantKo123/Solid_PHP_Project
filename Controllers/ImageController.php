@@ -9,24 +9,25 @@ class ImageController implements ImageControllerServiceInterface
 {
 
     private $allowedExtension = ['jpg', 'png', 'jpeg'];
-    private $uploadDir = __DIR__ . "/../assets/images/";
     public $error = [];
     private $limit = 1 * 1024 * 1024;
+    private $uploadDir = __DIR__ . "/../assets/images/";
 
-    public function upload($image): array
+    public function upload($image, $title): array
     {
 
         $fname = basename($image['name']);
         $tmpname = $image['tmp_name'];
         $type = strtolower(pathinfo($fname,PATHINFO_EXTENSION));
         $size = $image['size'];
+        $ftitle = str_replace(" ", "_", $title);
 
-        $targetFile = $this->uploadDir . $fname;
+        $targetFileName = uniqid() . "_" . $ftitle . "." . $type;
+        $targetFile = $this->uploadDir . $targetFileName;
 
         if($this->validateImage($type, $size)) {
             $this->saveImage($tmpname, $targetFile);
         }
-
 
         if(!empty($this->error)) {
             return [
@@ -38,7 +39,7 @@ class ImageController implements ImageControllerServiceInterface
 
         return [
             'status' => true,
-            'file' => $targetFile
+            'file' => $targetFileName
         ];
 
     }
@@ -48,12 +49,12 @@ class ImageController implements ImageControllerServiceInterface
         $status = true;
 
         if (!in_array($type, $this->allowedExtension) ) {
-            $this->error['type'] = "file must be jpg, png or jpeg!";
+            $this->error[] = "File must be jpg, png or jpeg!";
             $status = false;
         } 
         
         if ($size > $this->limit) {
-            $this->error['size'] = "Your file is too large!";
+            $this->error[] = "Your file is too large!";
             $status = false;
         } 
 
@@ -69,6 +70,17 @@ class ImageController implements ImageControllerServiceInterface
             $this->error['saving'] = "Can't Save Image";
         } 
 
+    }
+
+    public function delete($image): void 
+    {
+
+        $targetFile = $this->uploadDir . $image;
+
+        if(file_exists($targetFile)) {
+            unlink($targetFile);
+        }
+        
     }
 }
 

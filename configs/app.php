@@ -1,10 +1,11 @@
 <?php 
 
+session_start();
 
 require_once __DIR__ . '/../Controllers/PostController.php';
 use Controllers\PostController;
 
-$obj = new PostController();
+$postController = new PostController();
 
 ?>
 
