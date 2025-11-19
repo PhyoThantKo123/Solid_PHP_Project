@@ -68,10 +68,10 @@ $posts = $postController->getAllPosts();
                                     <td class="align-middle"><?= $post['description'] ?></td>
                                     <td class="align-middle ">
                                         <div class="d-flex gap-2">
-                                            <a href="./update.php?id=<?= $post['id'] ?>" class="nav-link text-primary">
+                                            <a href="./update.php?id=<?= $post['id'] ?>" class="text-decoration-none text-primary">
                                                 <i class="fa-solid fa-pen-to-square"></i>
                                             </a>
-                                            <a href="" class="nav-link text-danger">
+                                            <a href="./delete.php?id=<?= $post['id'] ?>" class="text-decoration-none text-danger">
                                                 <i class="fa-solid fa-trash"></i> 
                                             </a>
                                         </div>

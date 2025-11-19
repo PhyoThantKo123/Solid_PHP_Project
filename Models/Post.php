@@ -82,6 +82,17 @@ class Post implements PostInterface
 
     }
 
+    public function delete(int $id): void 
+    {
+        $sql = "DELETE FROM posts WHERE id=:id";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id', $id);
+
+        $stmt->execute();
+        
+    }
+
 }
 
 

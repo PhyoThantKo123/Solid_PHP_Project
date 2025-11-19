@@ -7,6 +7,7 @@ interface PostInterface {
     public function insert(string $title, string $desc, string $image): void;
     public function show(int $id): array;
     public function update(int $id, string $title, string $desc, string $image): void;
+    public function delete(int $id): void;
 }
 
 

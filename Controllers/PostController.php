@@ -4,11 +4,11 @@ namespace Controllers;
 
 require_once __DIR__ . "/../Contracts/Service/PostControllerInterface.php";
 require_once __DIR__ . '/../Models/Post.php';
-require_once __DIR__ . '/ImageController.php';
+
 
 use Models\Post;
 use Contracts\Service\PostControllerInterface;
-use Controllers\ImageController;
+
 
 class PostController implements PostControllerInterface
 {
@@ -107,6 +107,13 @@ class PostController implements PostControllerInterface
         ];
 
     }
+
+
+    public function delete(int $id): void 
+    {
+        $this->post->delete($id);
+    }
+
 
     public function sanitize(String $input): string 
     {
